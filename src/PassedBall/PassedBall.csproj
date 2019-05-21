@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net47;net46;net45;netstandard2.0</TargetFrameworks>
+    <Authors>Jim Evans</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © 2019 Jim Evans</Copyright>
+    <PackageProjectUrl>http://github.com/jimevans/PassedBall</PackageProjectUrl>
+    <Description>A utility for generating HTTP Authorization headers for various authentication schemes</Description>
+    <PackageTags>HTTP authentication</PackageTags>
+  </PropertyGroup>
+
+</Project>
