@@ -2,12 +2,18 @@
 
   <PropertyGroup>
     <TargetFrameworks>net47;net46;net45;netstandard2.0</TargetFrameworks>
+    <PackageId>PassedBall</PackageId>
+    <Version>1.0.0</Version>
     <Authors>Jim Evans</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright © 2019 Jim Evans</Copyright>
-    <PackageProjectUrl>http://github.com/jimevans/PassedBall</PackageProjectUrl>
+    <Company />
+    <Product>PassedBall</Product>
     <Description>A utility for generating HTTP Authorization headers for various authentication schemes</Description>
+    <Copyright>Copyright © 2019 Jim Evans</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>http://github.com/jimevans/PassedBall</PackageProjectUrl>
     <PackageTags>HTTP authentication</PackageTags>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>
