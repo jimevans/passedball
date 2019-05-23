@@ -12,10 +12,9 @@ namespace PassedBall
     {
         private const string BasicAuthenticationMarker = "Basic";
 
-        private string userName;
-        private string password;
-        private string realm = string.Empty;
-        private Encoding encoding = Encoding.ASCII;
+        private readonly string userName;
+        private readonly string password;
+        private readonly Encoding encoding = Encoding.ASCII;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicGenerator"/> class.
@@ -69,7 +68,7 @@ namespace PassedBall
 
                 if (authAttributes.ContainsKey("realm"))
                 {
-                    realm = authAttributes["realm"];
+                    Realm = authAttributes["realm"];
                 }
 
                 if (authAttributes.ContainsKey("charset"))
@@ -88,6 +87,11 @@ namespace PassedBall
         /// Gets the string value indicating Basic HTTP authentication.
         /// </summary>
         public override string AuthenticationType => BasicAuthenticationMarker;
+
+        /// <summary>
+        /// Gets the value of the "realm" issued in the authentication challenge, if any.
+        /// </summary>
+        public string Realm { get; private set; } = string.Empty;
 
         /// <summary>
         /// Gets the value for the authorization header for Basic authentication

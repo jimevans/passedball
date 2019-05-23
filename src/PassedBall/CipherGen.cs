@@ -10,15 +10,15 @@ namespace PassedBall
     /// </summary>
     public class CipherGen
     {
-        private Random random;
-        private long currentTime;
+        private readonly Random random;
+        private readonly long currentTime;
 
-        private string domain;
-        private string user;
-        private string password;
-        private byte[] challenge;
-        private string target;
-        private byte[] targetInformation;
+        private readonly string domain;
+        private readonly string user;
+        private readonly string password;
+        private readonly byte[] challenge;
+        private readonly string target;
+        private readonly byte[] targetInformation;
 
         // Information we can generate but may be passed in (for testing)
         private byte[] clientChallenge;
@@ -395,7 +395,7 @@ namespace PassedBall
         {
             if (ntlmv2Blob == null)
             {
-                ntlmv2Blob = createBlob(GetClientChallenge2(), targetInformation, GetTimestamp());
+                ntlmv2Blob = CreateBlob(GetClientChallenge2(), targetInformation, GetTimestamp());
             }
 
             return ntlmv2Blob;
@@ -651,7 +651,7 @@ namespace PassedBall
          *
          * @return The blob, used in the calculation of the NTLMv2 Response.
          */
-        private byte[] createBlob(byte[] clientChallenge, byte[] targetInformation, byte[] timestamp)
+        private byte[] CreateBlob(byte[] clientChallenge, byte[] targetInformation, byte[] timestamp)
         {
             byte[] blobSignature = new byte[] { 0x01, 0x01, 0x00, 0x00 };
             byte[] reserved = new byte[] { 0x00, 0x00, 0x00, 0x00 };

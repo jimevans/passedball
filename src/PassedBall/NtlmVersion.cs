@@ -7,7 +7,7 @@ namespace PassedBall
     /// </summary>
     public class NtlmVersion
     {
-        private byte[] versionInfo = new byte[8];
+        private readonly byte[] versionInfo = new byte[8];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NtlmVersion"/> class.

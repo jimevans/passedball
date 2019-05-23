@@ -14,19 +14,18 @@ namespace PassedBall
     {
         private const string DigestAuthenticationMarker = "Digest";
 
-        private DigestQualityOfProtection qop = DigestQualityOfProtection.Unknown;
-        private string userName;
-        private string password;
-        private string realm;
-        private string nonce;
-        private string algorithm;
-        private string httpMethod;
-        private string url;
+        private readonly DigestQualityOfProtection qop = DigestQualityOfProtection.Unknown;
+        private readonly string userName;
+        private readonly string password;
+        private readonly string realm;
+        private readonly string nonce;
+        private readonly string algorithm;
+        private readonly string httpMethod;
+        private readonly string url;
+        private readonly string opaque;
+        private readonly bool isStale;
         private string cnonce;
         private int nonceCount;
-        private string opaque;
-        private bool stale;
-        private string domain;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DigestGenerator"/> class.
@@ -147,19 +146,27 @@ namespace PassedBall
                 this.opaque = digestAuthAttributes["opaque"];
             }
 
-            this.stale = false;
+            this.isStale = false;
             if (digestAuthAttributes.ContainsKey("stale"))
             {
-                this.stale = bool.Parse(digestAuthAttributes["stale"].ToLowerInvariant());
+                this.isStale = bool.Parse(digestAuthAttributes["stale"].ToLowerInvariant());
             }
 
-            this.domain = string.Empty;
+            this.Domain = string.Empty;
             if (digestAuthAttributes.ContainsKey("domain"))
             {
-                this.domain = digestAuthAttributes["domain"];
+                this.Domain = digestAuthAttributes["domain"];
             }
 
-            this.cnonce = clientNonce;
+            if (this.isStale)
+            {
+                CreateClientNonce();
+            }
+            else
+            {
+                this.cnonce = clientNonce;
+            }
+            
             this.nonceCount = nonceCount;
         }
 
@@ -167,6 +174,11 @@ namespace PassedBall
         /// Gets the string value indicating Digest HTTP authentication.
         /// </summary>
         public override string AuthenticationType => DigestAuthenticationMarker;
+
+        /// <summary>
+        /// Gets the list of domains for which the same authentication response is valid.
+        /// </summary>
+        public string Domain { get; private set; }
 
         /// <summary>
         /// Gets the value for the response portion of the authorization header
