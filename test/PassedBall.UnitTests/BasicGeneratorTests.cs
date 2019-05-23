@@ -10,9 +10,9 @@ namespace PassedBall.UnitTests
     [TestFixture]
     public class BasicGeneratorTests
     {
-        private string userName = "Aladdin";
-        private string password = "open sesame";
-        private string expectedValue = "QWxhZGRpbjpvcGVuIHNlc2FtZQ==";
+        private readonly string userName = "Aladdin";
+        private readonly string password = "open sesame";
+        private readonly string expectedValue = "QWxhZGRpbjpvcGVuIHNlc2FtZQ==";
 
         [Test]
         public void TestUserNameAndPassword()

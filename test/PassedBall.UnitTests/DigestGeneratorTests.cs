@@ -10,11 +10,11 @@ namespace PassedBall.UnitTests
     [TestFixture]
     public class DigestGeneratorTests
     {
-        private string userName = "user.name";
-        private string password = "s3cr3tP@ssw0rd";
-        private string httpVerb = "GET";
-        private string url = "/login";
-        private string authenticationHeader = "realm=\"test.dev\", nonce=\"064af982c5b571cea6450d8eda91c20d\", domain=\"/login\", opaque=\"d8ea7aa61a1693024c4cc3a516f49b3c\", qop=auth";
+        private readonly string userName = "user.name";
+        private readonly string password = "s3cr3tP@ssw0rd";
+        private readonly string httpVerb = "GET";
+        private readonly string url = "/login";
+        private readonly string authenticationHeader = "realm=\"test.dev\", nonce=\"064af982c5b571cea6450d8eda91c20d\", domain=\"/login\", opaque=\"d8ea7aa61a1693024c4cc3a516f49b3c\", qop=auth";
 
         [Test]
         public void TestDigest()
@@ -24,7 +24,6 @@ namespace PassedBall.UnitTests
             string expectedResponse = "70eda34f1683041fd9ab72056c51b740";
 
             Assert.That(generator.GetAuthorizationValue(), Is.EqualTo(expectedResponse));
-            string ff = generator.GenerateAuthorizationHeader();
             Assert.That(generator.GenerateAuthorizationHeader(), Is.EqualTo(expectedHeaderValue));
         }
 
