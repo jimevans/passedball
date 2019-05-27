@@ -20,7 +20,7 @@ namespace PassedBall
         /// </summary>
         /// <param name="messageBody">The message body as a base64-encoded string.</param>
         public NtlmChallengeMessageGenerator(string messageBody)
-            : this(Convert.FromBase64String(messageBody))
+            : this(ParseAuthenticationHeader(messageBody))
         {
         }
 
@@ -116,6 +116,22 @@ namespace PassedBall
         protected override void BuildMessage()
         {
             // Building the Type 2 message is a no-op.
+        }
+
+        private static byte[] ParseAuthenticationHeader(string authenticationHeaderValue)
+        {
+            if (string.IsNullOrEmpty(authenticationHeaderValue))
+            {
+                throw new ArgumentNullException("authenticationHeaderValue", "Authentcation header value cannot be null or the empty string");
+            }
+
+            string parsedHeaderValue = authenticationHeaderValue;
+            if (parsedHeaderValue.StartsWith(NtlmGenerator.AuthorizationHeaderMarker) && parsedHeaderValue.Length >= NtlmGenerator.AuthorizationHeaderMarker.Length + 1)
+            {
+                parsedHeaderValue = parsedHeaderValue.Substring(NtlmGenerator.AuthorizationHeaderMarker.Length + 1);
+            }
+
+            return Convert.FromBase64String(parsedHeaderValue);
         }
     }
 }

@@ -48,7 +48,13 @@ namespace PassedBall
             this.password = password;
             if (!string.IsNullOrEmpty(authenticationHeaderValue))
             {
-                string[] contentAttributes = authenticationHeaderValue.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                string parsedHeader = authenticationHeaderValue;
+                if (parsedHeader.StartsWith(this.AuthenticationType) && parsedHeader.Length >= this.AuthenticationType.Length + 1)
+                {
+                    parsedHeader = parsedHeader.Substring(this.AuthenticationType.Length + 1);
+                }
+
+                string[] contentAttributes = parsedHeader.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 Dictionary<string, string> authAttributes = new Dictionary<string, string>();
                 foreach (string contentAttribute in contentAttributes)
                 {
@@ -82,6 +88,11 @@ namespace PassedBall
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the value of the Basic authentication header marker type ("Basic").
+        /// </summary>
+        public static string AuthorizationHeaderMarker => BasicAuthenticationMarker;
 
         /// <summary>
         /// Gets the string value indicating Basic HTTP authentication.

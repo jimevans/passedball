@@ -171,6 +171,11 @@ namespace PassedBall
         }
 
         /// <summary>
+        /// Gets the value of the Digest authentication header marker type ("Digest").
+        /// </summary>
+        public static string AuthorizationHeaderMarker => DigestAuthenticationMarker;
+
+        /// <summary>
         /// Gets the string value indicating Digest HTTP authentication.
         /// </summary>
         public override string AuthenticationType => DigestAuthenticationMarker;
@@ -328,11 +333,17 @@ namespace PassedBall
             return string.Format("{0} {1}", AuthenticationType, headerBuilder.ToString());
         }
 
-        private static Dictionary<string, string> ParseHeaderValue(string authenticationHeaderValue)
+        private Dictionary<string, string> ParseHeaderValue(string authenticationHeaderValue)
         {
+            string parsedHeaderValue = authenticationHeaderValue;
+            if (parsedHeaderValue.StartsWith(this.AuthenticationType) && parsedHeaderValue.Length >= this.AuthenticationType.Length + 1)
+            {
+                parsedHeaderValue = parsedHeaderValue.Substring(this.AuthenticationType.Length + 1);
+            }
+
             // Use a Regex to split the header value to allow for comma-
             // delimited values inside double-quoted token values.
-            string[] contentAttributes = Regex.Split(authenticationHeaderValue, ",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+            string[] contentAttributes = Regex.Split(parsedHeaderValue, ",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             Dictionary<string, string> digestAuthAttributes = new Dictionary<string, string>();
             foreach (string contentAttribute in contentAttributes)
             {

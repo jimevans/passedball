@@ -81,6 +81,11 @@ namespace PassedBall
         }
 
         /// <summary>
+        /// Gets the value of the NTLM authentication header marker type ("NTLM").
+        /// </summary>
+        public static string AuthorizationHeaderMarker => NtlmAuthenticationMarker;
+
+        /// <summary>
         /// Gets the current message contents as an array of bytes.
         /// </summary>
         protected byte[] MessageContents

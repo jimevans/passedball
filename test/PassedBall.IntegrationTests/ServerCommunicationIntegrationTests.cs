@@ -57,7 +57,7 @@ Upgrade-Insecure-Requests:1
         [Test]
         public async Task TestBasic()
         {
-            string authType = "Basic";
+            string authType = BasicGenerator.AuthorizationHeaderMarker;
             string userName = "farnsworth";
             string password = "GoodNewsEveryone!";
             string relativeUri = "/api/auth/basic";
@@ -73,8 +73,6 @@ Upgrade-Insecure-Requests:1
                 string authHeader = GetDesiredAuthHeader(authType, initialResponse);
                 Assert.That(authHeader, Is.Not.Null);
 
-                string authHeaderValue = authHeader.Substring(authType.Length + 1);
-
                 BasicGenerator generator = new BasicGenerator(userName, password);
                 string authorizeRequest = CreateRequest(fullUri, generator.GenerateAuthorizationHeader());
                 HttpResponse authorizedResponse = await SendRequestAndGetResponse(socket, authorizeRequest);
@@ -86,7 +84,7 @@ Upgrade-Insecure-Requests:1
         [Test]
         public async Task TestDigest()
         {
-            string authType = "Digest";
+            string authType = DigestGenerator.AuthorizationHeaderMarker;
             string userName = "leela";
             string password = "Nibbler";
             string relativeUri = "/api/auth/digest";
@@ -102,9 +100,7 @@ Upgrade-Insecure-Requests:1
                 string authHeader = GetDesiredAuthHeader(authType, initialResponse);
                 Assert.That(authHeader, Is.Not.Null);
 
-                string authHeaderValue = authHeader.Substring(authType.Length + 1);
-
-                DigestGenerator generator = new DigestGenerator(userName, password, "GET", relativeUri, authHeaderValue);
+                DigestGenerator generator = new DigestGenerator(userName, password, "GET", relativeUri, authHeader);
                 string authorizeRequest = CreateRequest(fullUri, generator.GenerateAuthorizationHeader());
                 HttpResponse authorizedResponse = await SendRequestAndGetResponse(socket, authorizeRequest);
                 Assert.That(authorizedResponse.StatusCode, Is.EqualTo(200));
@@ -115,7 +111,7 @@ Upgrade-Insecure-Requests:1
         [Test]
         public async Task TestNtlm()
         {
-            string authType = "NTLM";
+            string authType = NtlmGenerator.AuthorizationHeaderMarker;
             string userName = "PassedBallAuthUser";
             string password = "PassedBallP@ssw0rd!";
             string relativeUri = "/api/auth/ntlm";
@@ -139,9 +135,8 @@ Upgrade-Insecure-Requests:1
 
                 string challengeAuthHeader = GetDesiredAuthHeader(authType, challengeResponse);
                 Assert.That(challengeAuthHeader, Is.Not.Null);
-                string challengeAuthHeaderValue = challengeAuthHeader.Substring(authType.Length + 1);
 
-                NtlmChallengeMessageGenerator type2Generator = new NtlmChallengeMessageGenerator(challengeAuthHeaderValue);
+                NtlmChallengeMessageGenerator type2Generator = new NtlmChallengeMessageGenerator(challengeAuthHeader);
                 NtlmAuthenticateMessageGenerator type3Generator = new NtlmAuthenticateMessageGenerator(null, null, userName, password, type2Generator.Challenge, type2Generator.Flags, type2Generator.Target, type2Generator.TargetInfo);
 
                 string authorizeRequest = CreateRequest(fullUri, type3Generator.GenerateAuthorizationHeader());
