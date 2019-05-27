@@ -137,7 +137,7 @@ Upgrade-Insecure-Requests:1
                 Assert.That(challengeAuthHeader, Is.Not.Null);
 
                 NtlmChallengeMessageGenerator type2Generator = new NtlmChallengeMessageGenerator(challengeAuthHeader);
-                NtlmAuthenticateMessageGenerator type3Generator = new NtlmAuthenticateMessageGenerator(null, null, userName, password, type2Generator.Challenge, type2Generator.Flags, type2Generator.Target, type2Generator.TargetInfo);
+                NtlmAuthenticateMessageGenerator type3Generator = new NtlmAuthenticateMessageGenerator(null, null, userName, password, type2Generator);
 
                 string authorizeRequest = CreateRequest(fullUri, type3Generator.GenerateAuthorizationHeader());
                 HttpResponse authorizedResponse = await SendRequestAndGetResponse(socket, authorizeRequest);

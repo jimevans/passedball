@@ -44,6 +44,20 @@ namespace PassedBall
         /// <param name="host">The host against which to authenticate.</param>
         /// <param name="user">The user name to use in authenticating.</param>
         /// <param name="password">The password to use in authenticating.</param>
+        /// <param name="challengeMessage">A <see cref="NtlmChallengeMessageGenerator"/> object representing the challenge message received from the server.</param>
+        public NtlmAuthenticateMessageGenerator(string domain, string host, string user, string password, NtlmChallengeMessageGenerator challengeMessage)
+            : this(domain, host, user, password, challengeMessage.Challenge, challengeMessage.Flags, challengeMessage.Target, challengeMessage.TargetInfo, null, null, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NtlmAuthenticateMessageGenerator"/> class,
+        /// which generates an NTLM authentication Authenticate (or Type 3) message.
+        /// </summary>
+        /// <param name="domain">The domain against which to authenticate.</param>
+        /// <param name="host">The host against which to authenticate.</param>
+        /// <param name="user">The user name to use in authenticating.</param>
+        /// <param name="password">The password to use in authenticating.</param>
         /// <param name="nonce">The random byte array sent by the server as part of the challenge message.</param>
         /// <param name="negotiatedOptionFlags">The <see cref="NtlmNegotiateFlags"/> sent by the server as part of the challenge message.</param>
         /// <param name="target">The target sent by the server as part of the challenge message.</param>
