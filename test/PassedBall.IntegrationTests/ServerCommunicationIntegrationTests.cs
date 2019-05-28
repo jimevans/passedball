@@ -25,6 +25,7 @@ Connection:keep-alive
 Upgrade-Insecure-Requests:1
 {2}
 ";
+        private const int port = 5000;
 
         private IWebHost host;
         private Uri baseUri;
@@ -36,7 +37,7 @@ Upgrade-Insecure-Requests:1
                     .UseStartup<Startup>()
                     .UseKestrel((options) =>
                     {
-                        options.ListenAnyIP(0);
+                        options.ListenLocalhost(port);
                     })
                     .UseHttpSys((options) =>
                     {
@@ -65,7 +66,7 @@ Upgrade-Insecure-Requests:1
             string initialRequest = CreateInitialRequest(fullUri);
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                await socket.ConnectAsync("localhost", 5000);
+                await socket.ConnectAsync("localhost", port);
                 HttpResponse initialResponse = await SendRequestAndGetResponse(socket, initialRequest);
                 Assert.That(initialResponse.StatusCode, Is.EqualTo(401));
                 Assert.That(initialResponse.Headers.ContainsKey("WWW-Authenticate"));
@@ -92,7 +93,7 @@ Upgrade-Insecure-Requests:1
             string initialRequest = CreateInitialRequest(fullUri);
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                socket.Connect("localhost", 5000);
+                socket.Connect("localhost", port);
                 HttpResponse initialResponse = await SendRequestAndGetResponse(socket, initialRequest);
                 Assert.That(initialResponse.StatusCode, Is.EqualTo(401));
                 Assert.That(initialResponse.Headers.ContainsKey("WWW-Authenticate"));
@@ -119,7 +120,7 @@ Upgrade-Insecure-Requests:1
             string initialRequest = CreateInitialRequest(fullUri);
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                socket.Connect("localhost", 5000);
+                socket.Connect("localhost", port);
                 HttpResponse initialResponse = await SendRequestAndGetResponse(socket, initialRequest);
                 Assert.That(initialResponse.StatusCode, Is.EqualTo(401));
                 Assert.That(initialResponse.Headers.ContainsKey("WWW-Authenticate"));
